@@ -1,23 +1,13 @@
 <template>
   <div id="app">
-    <navBar/>
-    <mainBody/>
-    <pageFoot/>
+    <h3>Testing Router</h3>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import navBar from './components/navBar';
-import mainBody from './components/mainBody';
-import pageFoot from './components/pageFoot';
-
 export default {
-  name: 'App',
-  components: {
-    navBar,
-    mainBody,
-    pageFoot,
-  },
+  name: 'App'
 };
 </script>
 
