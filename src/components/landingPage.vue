@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import navBar from './components/navBar';
-import mainBody from './components/mainBody';
-import pageFoot from './components/pageFoot';
+import navBar from './navBar';
+import mainBody from './mainBody';
+import pageFoot from './pageFoot';
 
 export default {
     name: 'landingPage',
@@ -17,6 +17,6 @@ export default {
         navBar,
         mainBody,
         pageFoot,
-    },
+    }
 };
 </script>
