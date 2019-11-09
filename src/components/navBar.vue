@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation" id="navigation">
-      <div class="navbar-brand">
+    <div class="navbar-brand">
         <a role="button" class="navbar-burger burger"
             :class="active ? 'is-active' : ''" 
             aria-label="menu" 
@@ -13,20 +13,18 @@
         </a>
         
       </div>
-      <div class="navbar-menu"
-        :class="active ? 'is-active' : ''"
-        >
+      <div class="navbar-menu" :class="active ? 'is-active' : ''">
         <div id="base" class="navbar-start">
             <a class="navbar-item">HomeBud</a>
         </div>
         <div class="navbar-end">
           <div class="buttons">
             <a class="navbar-item">Sign Up</a>
-            <a class="navbar-item">Log In</a>
+            <a class="navbar-item" @click="login">Log In</a>
           </div>
-      </div>
-      </div> 
-    <login/>
+        </div>
+    </div> 
+    <login :status=loginProp  @closeLogin="loginClose" />
   </nav>
 </template>
 
@@ -37,7 +35,8 @@ export default {
     name: 'navBar',
     data() {
         return{
-            active: false
+            active: false,
+            loginProp: false
         }
     },
     components: {
@@ -48,7 +47,10 @@ export default {
             this.active = !this.active;
         },
         login(){
-
+            this.loginProp = true;
+        },
+        loginClose(){
+            this.loginProp = false;
         },
         register(){
 
