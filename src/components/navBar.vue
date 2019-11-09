@@ -17,19 +17,22 @@
         :class="active ? 'is-active' : ''"
         >
         <div id="base" class="navbar-start">
-            <a href="" class="navbar-item">HomeBud</a>
+            <a class="navbar-item">HomeBud</a>
         </div>
         <div class="navbar-end">
           <div class="buttons">
-            <a href="" class="navbar-item">Sign Up</a>
-            <a href="" class="navbar-item">Log In</a>
+            <a class="navbar-item">Sign Up</a>
+            <a class="navbar-item">Log In</a>
           </div>
       </div>
       </div> 
+    <login/>
   </nav>
 </template>
 
 <script>
+import login from './login'
+
 export default {
     name: 'navBar',
     data() {
@@ -38,11 +41,17 @@ export default {
         }
     },
     components: {
-
+        login
     },
     methods: {
         toggle(){
             this.active = !this.active;
+        },
+        login(){
+
+        },
+        register(){
+
         }
     }
 }
