@@ -19,28 +19,32 @@
         </div>
         <div class="navbar-end">
           <div class="buttons">
-            <a class="navbar-item">Sign Up</a>
+            <a class="navbar-item" @click="register">Sign Up</a>
             <a class="navbar-item" @click="login">Log In</a>
           </div>
         </div>
     </div> 
     <login :status=loginProp  @closeLogin="loginClose" />
+    <register :status=registerProp  @closeRegister="registerClose" />
   </nav>
 </template>
 
 <script>
-import login from './login'
+import login from './login';
+import register from './register';
 
 export default {
     name: 'navBar',
     data() {
         return{
             active: false,
-            loginProp: false
+            loginProp: false,
+            registerProp: false
         }
     },
     components: {
-        login
+        login,
+        register
     },
     methods: {
         toggle(){
@@ -53,7 +57,10 @@ export default {
             this.loginProp = false;
         },
         register(){
-
+            this.registerProp = true;
+        },
+        registerClose(){
+            this.registerProp = false;
         }
     }
 }
