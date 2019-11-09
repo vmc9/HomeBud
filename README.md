@@ -13,6 +13,7 @@ This is my first large project, so I am building it step by step, but most impor
 
 I will be documenting everything from wireframes I used to design the front end, to diagrams I will make to lay out the design of my back end.
 
+## Before trying it out, make sure you have vue-cli installed!
 
 ## Build Setup
 
