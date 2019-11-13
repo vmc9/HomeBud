@@ -1,5 +1,5 @@
 <template>
-    <div class="modal" :class="status ? 'is-active' : ''" id="login">
+    <div class="modal" :class="loginPrompt" id="login">
         <div class="modal-background"></div>
         <div class="modal-content">
             <div class="box">
@@ -40,8 +40,10 @@ export default {
             }
         }
     },
-    props: {
-        status: Boolean,
+    computed: {
+        loginPrompt(){
+            return this.$store.state.loginPrompt;
+        }
     },
     methods: {
         validate(){

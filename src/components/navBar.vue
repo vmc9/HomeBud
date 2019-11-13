@@ -38,8 +38,6 @@ export default {
     data() {
         return{
             active: false,
-            loginProp: false,
-            registerProp: false
         }
     },
     components: {
@@ -51,16 +49,16 @@ export default {
             this.active = !this.active;
         },
         login(){
-            this.loginProp = true;
+            this.$store.commit('openLogin');
         },
         loginClose(){
-            this.loginProp = false;
+            this.$store.commit('closeLogin');
         },
         register(){
-            this.registerProp = true;
+            this.$store.commit('openRegister');
         },
         registerClose(){
-            this.registerProp = false;
+            this.$store.commit('closeRegister');
         }
     }
 }
@@ -73,6 +71,13 @@ export default {
         background-color: #145DA0;
     }
     .navbar-item {
+        color: ghostwhite;
+    }
+    .burger{
+        color: ghostwhite;
+    }
+    .is-active{
+        background-color: #145DA0;
         color: ghostwhite;
     }
 </style>
