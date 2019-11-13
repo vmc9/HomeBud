@@ -1,5 +1,5 @@
 <template>
-    <div class="modal" :class="status ? 'is-active' : ''" id="register">
+    <div class="modal" :class="register" id="register">
         <div class="modal-background"></div>
         <div class="modal-content">
             <div class="box">
@@ -47,8 +47,10 @@ export default {
             }
         }
     },
-    props: {
-        status: Boolean,
+    computed: {
+        register(){
+            return this.$store.state.registerPrompt;
+        }
     },
     methods: {
         validate(){
