@@ -57,8 +57,7 @@ export default {
             console.log(this.input);
         },
         close(){
-             this.$emit("closeRegister");
-             document.getElementById("register").classList.toggle("is-active", false);
+            this.$store.commit('closeRegister');
         }
     }
 }

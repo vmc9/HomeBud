@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import {mock} from './../mockUser';
 export default {
     name: 'login',
     data() {
@@ -37,7 +38,8 @@ export default {
             input: {
                 username: '',
                 password: '',
-            }
+            },
+
         }
     },
     computed: {
@@ -47,11 +49,26 @@ export default {
     },
     methods: {
         validate(){
-            console.log(this.input);
+            if(this.input.username!=''&& this.input.password!=''){
+                for(let user of mock){
+                    if(user.userName == this.input.username && user.password == this.input.password){
+                        console.log("Login Successfull");
+                        this.$store.commit('loggedIn', user);
+                        this.close();
+                        console.log(`Welcome ${this.$store.state.user.firstName}`);
+                        break;
+                    }
+                    else{
+                        console.log("Login Failed");
+                    }
+                }
+            }
+            else{
+                console.log("Info Missing")
+            }
         },
         close(){
-             this.$emit("closeLogin");
-             document.getElementById("login").classList.toggle("is-active", false);
+             this.$store.commit('closeLogin');
         }
     }
 }

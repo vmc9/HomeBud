@@ -24,8 +24,8 @@
           </div>
         </div>
     </div> 
-    <login :status=loginProp  @closeLogin="loginClose" />
-    <register :status=registerProp  @closeRegister="registerClose" />
+    <login/>
+    <register/>
   </nav>
 </template>
 
@@ -51,14 +51,8 @@ export default {
         login(){
             this.$store.commit('openLogin');
         },
-        loginClose(){
-            this.$store.commit('closeLogin');
-        },
         register(){
             this.$store.commit('openRegister');
-        },
-        registerClose(){
-            this.$store.commit('closeRegister');
         }
     }
 }
