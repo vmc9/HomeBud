@@ -7,7 +7,7 @@
                 <div class="field">
                     <label class="label">Username</label>
                     <div class="control">
-                        <input type="text" class="input" v-model="input.username">
+                        <input type="text" class="input" v-model="input.username" @blur="userSearch">
                     </div>
                 </div>
 
@@ -48,6 +48,16 @@ export default {
         }
     },
     methods: {
+        userSearch(){
+            if(this.input.username!=''){
+                for(let user of mock){
+                    if(user.userName == this.input.username){
+                        console.log("User Found!");
+                        break;
+                    }
+                }
+            }
+        },
         validate(){
             if(this.input.username!=''&& this.input.password!=''){
                 for(let user of mock){
@@ -75,5 +85,7 @@ export default {
 </script>
 
 <style scoped>
-
+    #login {
+        background-color: rgb(97,97,100,0.2);
+    }
 </style>
