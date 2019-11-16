@@ -49,33 +49,31 @@ export default {
     },
     methods: {
         userSearch(){
+            let found = false;
             if(this.input.username!=''){
                 for(let user of mock){
                     if(user.userName == this.input.username){
-                        console.log("User Found!");
+                        found = true;
                         break;
                     }
                 }
             }
+            found ? console.log("User Found!") : console.log("User Not Found!"); 
         },
         validate(){
+            let validated = false;
             if(this.input.username!=''&& this.input.password!=''){
                 for(let user of mock){
                     if(user.userName == this.input.username && user.password == this.input.password){
                         console.log("Login Successfull");
                         this.$store.commit('loggedIn', user);
                         this.close();
-                        console.log(`Welcome ${this.$store.state.user.firstName}`);
+                        validated = true;
                         break;
-                    }
-                    else{
-                        console.log("Login Failed");
                     }
                 }
             }
-            else{
-                console.log("Info Missing")
-            }
+            validated ? console.log(`Welcome ${this.$store.state.user.firstName}`) : console.log("Login Failed");
         },
         close(){
              this.$store.commit('closeLogin');
