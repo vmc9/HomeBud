@@ -7,15 +7,21 @@
                 <div class="field">
                     <label class="label">Username</label>
                     <div class="control">
-                        <input type="text" class="input" v-model="input.username" @blur="userSearch">
+                        <input type="text" class="input" v-model="input.username" @blur="userSearch" :class="userValid">
                     </div>
+                    <!--Username is-success/is-danger-->
+                    <p class="help"
+                    :class="userValid">{{userTip}}</p>
                 </div>
 
                 <div class="field"> 
                     <div class="control">
                         <label class="label">Password</label>
                     </div>
-                    <input type="password" class="input" v-model="input.password">
+                    <input type="password" class="input" v-model="input.password" @blur="passSearch" :class="passValid">
+                    <!--Username is-success/is-danger-->
+                    <p class="help"
+                    :class="passValid">{{passTip}}</p>
                 </div>  
 
                 <div class="field">
@@ -39,26 +45,51 @@ export default {
                 username: '',
                 password: '',
             },
-
+            userValid: '',
+            userTip: '',
+            passValid: '',
+            passTip: ''
         }
     },
     computed: {
         loginPrompt(){
             return this.$store.state.loginPrompt;
-        }
+        },
     },
     methods: {
         userSearch(){
-            let found = false;
             if(this.input.username!=''){
+                let found = false;
                 for(let user of mock){
                     if(user.userName == this.input.username){
                         found = true;
                         break;
                     }
                 }
+                found ? this.userValid = 'is-success' : this.userValid = 'is-danger';
+                found ? this.userTip = 'Username is Valid' : this.userTip = 'Username is not Valid';
             }
-            found ? console.log("User Found!") : console.log("User Not Found!"); 
+            else{
+                this.userTip = '';
+                this.userValid = '';
+            } 
+        },
+        passSearch(){
+            if(this.input.password!=''){
+                let found = false;
+                for(let user of mock){
+                    if(user.password == this.input.password&&user.userName == this.input.username){
+                        found = true;
+                        break;
+                    }
+                }
+                found ? this.passValid = 'is-success' : this.passValid = 'is-danger';
+                found ? this.passTip = 'Passwrod is Valid' : this.passTip = 'Password is not Valid';
+            }
+            else{
+                this.passTip = '';
+                this.passValid = '';
+            }   
         },
         validate(){
             let validated = false;
