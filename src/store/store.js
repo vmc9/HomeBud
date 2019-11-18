@@ -6,11 +6,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         loginPrompt: '',
-        registerPrompt: ''
+        registerPrompt: '',
+        authenticated: false,
+        user: ''
     },
 
     getters: {
-
+        anonymous: state => {return !state.authenticated}
     },
     
     mutations: {
@@ -26,6 +28,14 @@ export default new Vuex.Store({
         },
         closeRegister(state){
             state.registerPrompt = '';
+        },
+        loggedIn(state, user){
+            state.authenticated = true;
+            state.user = user;
+
+        },
+        loggedOut(state){
+            state.authenticated = false;
         }
     },
 

@@ -1,32 +1,57 @@
 <template>
-  <nav class="navbar" role="navigation" aria-label="main navigation" id="navigation">
-    <div class="navbar-brand">
-        <a role="button" class="navbar-burger burger"
-            :class="active ? 'is-active' : ''" 
-            aria-label="menu" 
-            aria-expanded="false" 
-            data-target="base"
-            @click="toggle()">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-        
-      </div>
-      <div class="navbar-menu" :class="active ? 'is-active' : ''">
-        <div id="base" class="navbar-start">
-            <a class="navbar-item">HomeBud</a>
-        </div>
-        <div class="navbar-end">
-          <div class="buttons">
-            <a class="navbar-item" @click="register">Sign Up</a>
-            <a class="navbar-item" @click="login">Log In</a>
-          </div>
-        </div>
-    </div> 
-    <login :status=loginProp  @closeLogin="loginClose" />
-    <register :status=registerProp  @closeRegister="registerClose" />
-  </nav>
+    <div>
+        <nav v-if="this.$store.getters.anonymous" class="navbar" role="navigation" aria-label="main navigation" id="anon-navigation">
+            <div class="navbar-brand">
+                <a role="button" class="navbar-burger burger"
+                    :class="active ? 'is-active' : ''" 
+                    aria-label="menu" 
+                    aria-expanded="false" 
+                    data-target="base"
+                    @click="toggle()">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+                
+            </div>
+            <div class="navbar-menu" :class="active ? 'is-active' : ''">
+                <div class="navbar-end">
+                    <div class="buttons">
+                        <a class="button navbar-item" @click="register">Sign Up</a>
+                        <a class="button navbar-item" @click="login">Log In</a>
+                    </div>
+                </div>
+            </div> 
+            <login/>
+            <register/>
+        </nav>
+        <nav v-else  class="navbar" role="navigation" aria-label="main navigation" id="user-navigation">
+            <div class="navbar-brand">
+                <a role="button" class="navbar-burger burger"
+                    :class="active ? 'is-active' : ''" 
+                    aria-label="menu" 
+                    aria-expanded="false" 
+                    data-target="base"
+                    @click="toggle()">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+                
+            </div>
+            <div class="navbar-menu" :class="active ? 'is-active' : ''">
+                <div class="navbar-item">
+                    <h2 class="subtitle is-4">{{`Welcome ${this.$store.state.user.firstName}!`}}</h2>
+                </div>
+                <div class="navbar-end">
+                    <div class="buttons">
+                        <a class="button navbar-item">My Account</a>
+                        <a class="button navbar-item">Log Out</a>
+                    </div>
+                </div>
+            </div> 
+        </nav>
+    </div>
 </template>
 
 <script>
@@ -44,6 +69,9 @@ export default {
         login,
         register
     },
+    computed: {
+
+    },
     methods: {
         toggle(){
             this.active = !this.active;
@@ -51,29 +79,23 @@ export default {
         login(){
             this.$store.commit('openLogin');
         },
-        loginClose(){
-            this.$store.commit('closeLogin');
-        },
         register(){
             this.$store.commit('openRegister');
-        },
-        registerClose(){
-            this.$store.commit('closeRegister');
         }
     }
 }
 </script>
 
 <style scoped>
-    #navigation {
+    .navbar {
         padding-left: 10px;
         padding-right: 10px;
         background-color: #145DA0;
     }
-    .navbar-item {
-        color: ghostwhite;
+    .button {
+        background-color: #B1D4E0;
     }
-    .burger{
+    .navbar-item, .subtitle, .burger {
         color: ghostwhite;
     }
     .is-active{

@@ -57,13 +57,14 @@ export default {
             console.log(this.input);
         },
         close(){
-             this.$emit("closeRegister");
-             document.getElementById("register").classList.toggle("is-active", false);
+            this.$store.commit('closeRegister');
         }
     }
 }
 </script>
 
 <style scoped>
-
+    #register {
+        background-color: rgb(97,97,100,0.2);
+    }
 </style>
