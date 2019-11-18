@@ -96,7 +96,6 @@ export default {
             if(this.input.username!=''&& this.input.password!=''){
                 for(let user of mock){
                     if(user.userName == this.input.username && user.password == this.input.password){
-                        console.log("Login Successfull");
                         this.$store.commit('loggedIn', user);
                         this.close();
                         validated = true;
