@@ -12,7 +12,7 @@ export default new Vuex.Store({
     },
 
     getters: {
-
+        anonymous: state => {return !state.authenticated}
     },
     
     mutations: {
