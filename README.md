@@ -1,5 +1,5 @@
 ## HomeBud
-![HomeBud Logo](/src/assets/imageslogo.png)
+![HomeBud Logo](/src/assets/images/logo.png)
 
 HomeBud is a simple Web App that I am working on, building on top of the basic Vue App framework.
 
