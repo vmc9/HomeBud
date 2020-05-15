@@ -1,9 +1,5 @@
 ## HomeBud
-<<<<<<< HEAD
 ![HomeBud Logo](/src/assets/imageslogo.png)
-=======
-![HomeBud Logo](src/assets/images/logo.png)
->>>>>>> 190946d238b21aa9c40bbe96a13d0a1220bfeaea
 
 HomeBud is a simple Web App that I am working on, building on top of the basic Vue App framework.
 
@@ -11,7 +7,6 @@ It is going to be an application that will help people find lost pets, including
 
 I am building the front end with Vue.js, alongside with Bulma as a CSS framework.
 
-<<<<<<< HEAD
 The application's back end is a Node.JS REST API built with the Express framework.
 
 ## Build Setup
@@ -31,4 +26,3 @@ npm run build --report
 ```
 =======
 The application's back end is a Node.JS REST API built with the Express framework.
->>>>>>> 190946d238b21aa9c40bbe96a13d0a1220bfeaea
