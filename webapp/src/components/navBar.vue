@@ -10,7 +10,7 @@
                 <v-btn class="secondary white--text px-5 mx-5">
                     Log In
                 </v-btn>
-                <v-btn class="secondary white--text px-5 mx-5">
+                <v-btn class="secondary white--text px-5 mx-5" href="http://localhost:8080/signup">
                     Sign Up
                 </v-btn>
             </div>
