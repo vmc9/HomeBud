@@ -7,11 +7,14 @@
             </v-app-bar-title>
             <v-spacer/>
             <div class="px-5 mx-5">
-                <v-btn class="secondary white--text px-5 mx-5">
+                <v-btn class="secondary white--text px-5 mx-5" router to='/login'>
                     Log In
                 </v-btn>
                 <v-btn class="secondary white--text px-5 mx-5" router to='/signup'>
                     Sign Up
+                </v-btn>
+                <v-btn class="secondary px-5 mx-5" router to='/'>
+                    <v-icon>mdi-home</v-icon>
                 </v-btn>
             </div>
         </v-app-bar>

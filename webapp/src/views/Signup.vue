@@ -1,12 +1,12 @@
 <template>
   <div class="signup">
-    <v-container class="white my-10 elevation-20" style="width: 1200px">
+    <v-container class="white my-10 elevation-20" style="max-width: 1200px">
         <v-row> 
           <v-col cols="12" class="d-flex align-center justify-center"> 
             <v-img :src="title" aspect-ratio="3" contain style="max-width: 500px"/>
           </v-col>
         </v-row>
-        <div align="center">
+        <div align="center" class="d-flex align-center justify-center">
             <p class="subtitle-1" style="width: 800px">
               You're just one step away from being closer to reuniting with your best bud.
               <br/><br/>
@@ -80,20 +80,23 @@
                 ></v-text-field>
             </v-col>
           </v-row>
-          <div align="center">
+          <div align="center" class="my-10">
             <p class="caption" style="width: 500px">Your password should be 8-16 characters long, and include a combination of uppercase and lower case letters, numbers, and special digits.</p>
             <v-btn class="mr-4" @click="submit">submit</v-btn>
             <v-btn @click="clear">clear</v-btn>
           </div>
         </v-form>
       </v-container>
-      <v-container class="primary" style="width: 1200px">
+      <v-container class="primary" style="max-width: 1200px">
         <v-row class="justify-center align-center">
           <v-col class="d-flex justify-center">
             <v-img :src="banner1" aspect-ratio="1.7" contain style="max-width: 500px"/>
           </v-col>
           <v-col class="d-flex justify-center">
             <v-img :src="banner2" aspect-ratio="1.7" contain style="max-width: 500px"/>
+          </v-col>
+          <v-col class="d-flex justify-center">
+            <v-img :src="banner3" aspect-ratio="1.7" contain style="max-width: 500px"/>
           </v-col>
         </v-row>
       </v-container>
@@ -106,8 +109,9 @@ const pass = helpers.regex('pass', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&
 export default {
   data() {
     return {
-      banner1:require('../assets/images/11.jpeg'),
-      banner2:require('../assets/images/15.jpeg'),  
+      banner1:require('../assets/images/medium/dan.jpg'),
+      banner2:require('../assets/images/medium/renee.jpg'),
+      banner3:require('../assets/images/medium/travis.jpg'),    
       title: require('../assets/images/title.png'),
       firstname: '',
       lastname: '',
