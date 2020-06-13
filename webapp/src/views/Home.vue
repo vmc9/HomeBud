@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <v-container style="max-width: 1500px">
+    <v-container class="mb-10" style="max-width: 1200px">
       <v-row>
         <v-col  class="d-flex align-center justify-center">
           <div class="px-5 white--text">
@@ -9,12 +9,14 @@
           </div>
         </v-col>
         <v-col  class="d-flex align-center justify-center">
-          <v-img :src="logo" aspect-ratio="1.7" contain class="my-10"  style="min-width: 500px"/>
+          <v-img :src="logo" aspect-ratio="1.7" contain class="my-10"  style="width: 400"/>
         </v-col>
       </v-row>
 
+      <home-menu/>
+
       <v-row>
-        <v-col class="mx-5" style="max-width: 600px">
+        <v-col style="max-width: 600px">
           <v-card class="primary">
             <v-list-item class="py-3">
               <v-list-item-avatar color='white'></v-list-item-avatar>
@@ -27,7 +29,7 @@
 
             <v-img :src="profile" aspect-ratio="1.5"/>
 
-            <v-card-text class='white--text'>
+          <v-card-text class='white--text'>
               Roxy is a sweet girl, last seen jumping over her owner's backyard fence.
               She is a small Shiba, responds to her name, and is dearly missed by her family!
             </v-card-text>
@@ -59,10 +61,10 @@
                 <v-icon>mdi-share-variant</v-icon>
               </v-btn>
             </v-card-actions>
-
           </v-card>
+
         </v-col>
-        <v-col class="d-flex align-center justify-center mx-5">
+        <v-col class="d-flex align-center justify-center">
           <p class="display-1 white--text font-weight-bold">
             HomeBud helps you plan  your search for a lost pet.
             <br/> <br/>
@@ -75,16 +77,22 @@
 </template>
 
 <script>
-
+import HomeMenu from "../components/homeMenu"
 export default {
   name: 'Home',
   components: {
-
+    HomeMenu
   },
   data() {
     return {
       logo: require('../assets/images/logo.png'),
       profile: require('../assets/images/1.jpg'),
+      tab: null,
+      items: [
+        {tab: "I Lost A Pet", content: 'What to do if you lost a pet', icon: "mdi-alert-decagram"},
+        {tab: "I Found A Pet", content: 'What to do if you found a pet', icon: 'mdi-eye'},
+        {tab: "I Want to Help", content: 'How you can help', icon: 'mdi-heart-circle'}
+      ]
     }
   }
 }

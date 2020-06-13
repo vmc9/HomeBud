@@ -1,13 +1,20 @@
 <template>
-      <v-container  fill-height fluid class="white d-flex justify-center align-center">
-        <v-row>
-          <v-col>
-            <v-img :src="title" aspect-ratio="1.7" contain style="max-width: 500px"/>
+  <div class="signup">
+    <v-container class="white my-10 elevation-20" style="max-width: 1200px">
+        <v-row> 
+          <v-col cols="12" class="d-flex align-center justify-center"> 
+            <v-img :src="title" aspect-ratio="3" contain style="max-width: 500px"/>
           </v-col>
         </v-row>
+        <div align="center" class="d-flex align-center justify-center">
+            <p class="subtitle-1" style="width: 800px">
+              You're just one step away from being closer to reuniting with your best bud.
+              <br/><br/>
+              We just need a few details from you.</p>
+          </div>
         <v-form> 
-          <v-row>  
-              <v-col>
+          <v-row class="d-flex align-center justify-center">  
+              <v-col cols="5">
                   <v-text-field
                     v-model="firstname"
                     :error-messages="firstNameErrors"
@@ -17,7 +24,7 @@
                     @blur="$v.firstname.$touch()"
                   ></v-text-field>
               </v-col>
-              <v-col>
+              <v-col cols="5" justify="center">
                   <v-text-field
                   v-model="lastname"
                   :error-messages="lastNameErrors"
@@ -28,8 +35,8 @@
                   ></v-text-field>
               </v-col>
           </v-row>
-          <v-row >
-              <v-col>
+          <v-row class="d-flex align-center justify-center">
+              <v-col cols="5">
                   <v-text-field
                     v-model="email"
                     :error-messages="emailErrors"
@@ -39,7 +46,7 @@
                     @blur="$v.email.$touch()"
                   ></v-text-field>
               </v-col>
-              <v-col>
+              <v-col cols="5">
                   <v-text-field
                     v-model="postalcode"
                     :error-messages="postalErrors"
@@ -50,8 +57,8 @@
                   ></v-text-field>
               </v-col>
           </v-row>
-          <v-row>
-            <v-col>
+          <v-row class="d-flex align-center justify-center">
+            <v-col cols="5">
                 <v-text-field
                   v-model="username"
                   :error-messages="usernameErrors"
@@ -61,7 +68,7 @@
                   @blur="$v.username.$touch()"
                 ></v-text-field>
             </v-col>
-            <v-col>
+            <v-col cols="5">
                 <v-text-field
                   v-model="password"
                   :error-messages="passwordErrors"
@@ -73,18 +80,27 @@
                 ></v-text-field>
             </v-col>
           </v-row>
-          <div>
-            <p>Your password should be 8-16 characters long, and include a combination of uppercase and lower case letters, numbers, and special digits.</p>
+          <div align="center" class="my-10">
+            <p class="caption" style="width: 500px">Your password should be 8-16 characters long, and include a combination of uppercase and lower case letters, numbers, and special digits.</p>
             <v-btn class="mr-4" @click="submit">submit</v-btn>
             <v-btn @click="clear">clear</v-btn>
           </div>
         </v-form>
-        <v-row>
-          <v-col>
-            <v-img :src="banner" aspect-ratio="1.7" contain style="max-width: 500px"/>
+      </v-container>
+      <v-container class="primary" style="max-width: 1200px">
+        <v-row class="justify-center align-center">
+          <v-col class="d-flex justify-center">
+            <v-img :src="banner1" aspect-ratio="1.7" contain style="max-width: 500px"/>
+          </v-col>
+          <v-col class="d-flex justify-center">
+            <v-img :src="banner2" aspect-ratio="1.7" contain style="max-width: 500px"/>
+          </v-col>
+          <v-col class="d-flex justify-center">
+            <v-img :src="banner3" aspect-ratio="1.7" contain style="max-width: 500px"/>
           </v-col>
         </v-row>
       </v-container>
+  </div>
 </template>
 
 <script>
@@ -93,7 +109,9 @@ const pass = helpers.regex('pass', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&
 export default {
   data() {
     return {
-      banner:require('../assets/images/11.jpeg'), 
+      banner1:require('../assets/images/medium/dan.jpg'),
+      banner2:require('../assets/images/medium/renee.jpg'),
+      banner3:require('../assets/images/medium/travis.jpg'),    
       title: require('../assets/images/title.png'),
       firstname: '',
       lastname: '',
