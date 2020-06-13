@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <v-container style="max-width: 1200px">
+    <v-container class="mb-10" style="max-width: 1200px">
       <v-row>
         <v-col  class="d-flex align-center justify-center">
           <div class="px-5 white--text">
@@ -13,34 +13,7 @@
         </v-col>
       </v-row>
 
-      <v-tabs
-        v-model="tab"
-        background-color="primary"
-        centered
-        dark
-        grow
-        icons-and-text
-      >
-        <v-tabs-slider color="grey"></v-tabs-slider>
-        <v-tab
-          v-for="item in items"
-          :key="item.tab"
-        >
-          {{ item.tab }}
-         <v-icon>{{ item.icon }}</v-icon>
-        </v-tab>
-      </v-tabs>
-  
-      <v-tabs-items v-model="tab">
-        <v-tab-item
-          v-for="item in items"
-          :key="item.tab"
-        >
-          <v-card flat>
-            <v-card-text>{{ item.content }}</v-card-text>
-          </v-card>
-        </v-tab-item>
-      </v-tabs-items>
+      <home-menu/>
 
       <v-row>
         <v-col style="max-width: 600px">
@@ -56,7 +29,7 @@
 
             <v-img :src="profile" aspect-ratio="1.5"/>
 
-            <v-card-text class='white--text'>
+          <v-card-text class='white--text'>
               Roxy is a sweet girl, last seen jumping over her owner's backyard fence.
               She is a small Shiba, responds to her name, and is dearly missed by her family!
             </v-card-text>
@@ -88,8 +61,8 @@
                 <v-icon>mdi-share-variant</v-icon>
               </v-btn>
             </v-card-actions>
-
           </v-card>
+
         </v-col>
         <v-col class="d-flex align-center justify-center">
           <p class="display-1 white--text font-weight-bold">
@@ -104,11 +77,11 @@
 </template>
 
 <script>
-
+import HomeMenu from "../components/homeMenu"
 export default {
   name: 'Home',
   components: {
-
+    HomeMenu
   },
   data() {
     return {
