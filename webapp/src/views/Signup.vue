@@ -104,7 +104,9 @@
 </template>
 
 <script>
+//import { mapGetters, mapActions} from 'vuex'
 import { required, minLength, email, helpers} from 'vuelidate/lib/validators'
+import {api} from "../plugins/services.js"
 const pass = helpers.regex('pass', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/)
 export default {
   data() {
@@ -134,6 +136,7 @@ export default {
       !this.$v.lastname.required && errors.push('Last Name is required.')
       return errors
     },
+    //TODO: CHANGE LIMITATION TO 6 CHARACTERS
     usernameErrors () {
       const errors = []
       if (!this.$v.username.$dirty) return errors
@@ -165,6 +168,30 @@ export default {
   methods: {
     submit(){
       this.$v.$touch()
+      if(!this.$v.$invalid){
+        const data = {
+          username: this.username,
+          email: this.email,
+          password: this.password,
+          firstName: this.firstname,
+          lastName: this.lastname
+        }
+        api.post('users/signup', data)
+          .then((res)=>{
+            console.log(res)
+            if(res.status == 201){
+              console.log("Accepted!")
+              this.$router.push('./signup/ok')
+            }
+          })
+          .catch((err)=>{
+            console.log(err)
+            if(err.response.status == 409){
+              console.log("Already member!")
+              this.$router.push('./signup/error')
+            }
+          })
+      }
     },
     clear(){
       this.$v.$reset()

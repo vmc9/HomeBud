@@ -24,8 +24,18 @@ Vue.use(VueRouter)
     component: () => import('../views/Signup.vue')
   },
   {
+    path: '/signup/ok',
+    name: 'SignupOk',
+    component: () => import('../views/SignupOk.vue')
+  },
+  {
+    path: '/signup/error',
+    name: 'SignupError',
+    component: () => import('../views/SignupError.vue')
+  },
+  {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: () => import('../views/Login.vue')
   }
 ]

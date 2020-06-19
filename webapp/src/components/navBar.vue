@@ -2,9 +2,9 @@
     <nav>
         <v-app-bar flat app class="primary white--text">
             <v-app-bar-nav-icon class="white--text" @click="drawer = !drawer"/>
-            <v-app-bar-title>
+            <v-toolbar-title>
                 HomeBud
-            </v-app-bar-title>
+            </v-toolbar-title>
             <v-spacer/>
             <div class="px-5 mx-5">
                 <v-btn class="secondary white--text px-5 mx-5" router to='/login'>
@@ -27,7 +27,6 @@
 
 <script>
 export default {
-    name: 'navBar',
     data() {
         return{
             drawer: false,

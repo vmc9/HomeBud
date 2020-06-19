@@ -75,6 +75,7 @@
 
 <script>
 import { required, minLength, helpers} from 'vuelidate/lib/validators'
+import {api} from "../plugins/services.js"
 const pass = helpers.regex('pass', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/)
 export default {
   data() {
@@ -109,6 +110,23 @@ export default {
   methods: {
     submit(){
       this.$v.$touch()
+      if(!this.$v.$invalid){
+        const data = {
+          username: this.username,
+          password: this.password
+        }
+        api.post("/users/login", data)
+          .then((res)=>{
+            console.log(res)
+            if(res.status == 200){
+              console.log('Logged in')
+              
+            }
+          })
+          .catch((err)=>{
+            console.log(err)
+          })
+      }
     },
     clear(){
       this.$v.$reset()
