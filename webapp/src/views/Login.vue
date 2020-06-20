@@ -74,8 +74,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import { required, minLength, helpers} from 'vuelidate/lib/validators'
-import {api} from "../plugins/services.js"
 const pass = helpers.regex('pass', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/)
 export default {
   data() {
@@ -92,6 +92,7 @@ export default {
     }
   },
   computed:{
+    ...mapGetters(['jwt', 'authenticated']),
     usernameErrors () {
       const errors = []
       if (!this.$v.username.$dirty) return errors
@@ -108,24 +109,26 @@ export default {
     },
   },
   methods: {
-    submit(){
+    ...mapActions(['fetchJWT', 'loginUser']),
+    async submit(){
       this.$v.$touch()
       if(!this.$v.$invalid){
-        const data = {
-          username: this.username,
+        await this.fetchJWT({ 
+          username: this.username, 
           password: this.password
-        }
-        api.post("/users/login", data)
-          .then((res)=>{
-            console.log(res)
-            if(res.status == 200){
-              console.log('Logged in')
-              
+          })
+        if(this.authenticated){
+          const data = {
+            username: this.username,
+            token: this.jwt
             }
+          this.loginUser({
+            data
           })
-          .catch((err)=>{
-            console.log(err)
-          })
+        }
+        else {
+          console.log("Not Authenticated")
+        }
       }
     },
     clear(){
