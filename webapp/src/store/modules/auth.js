@@ -27,7 +27,6 @@ const auth = {
                 if(res.status == 200){
                     commit('setJWT', res.data.token)
                     commit('setAuthenticated', true)
-                    console.log('Authenticated')
                 } 
             } catch (error) {
                 console.log(error)

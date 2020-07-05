@@ -26,11 +26,14 @@ const login = {
                 const res = await api.get("users/" + data.username, config)
                 if(res.status == 200){
                     commit('setUser', res.data.user)
-                    console.log('Logged in')
-                    console.log(res.data.user)
+                    return true
+                }
+                else {
+                    return false
                 }
             } catch (error) {
                 console.log(error)
+                return false
             }
         }
     }

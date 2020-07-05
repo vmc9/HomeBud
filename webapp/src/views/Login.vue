@@ -92,7 +92,7 @@ export default {
     }
   },
   computed:{
-    ...mapGetters(['jwt', 'authenticated']),
+    ...mapGetters(['jwt', 'authenticated', 'user']),
     usernameErrors () {
       const errors = []
       if (!this.$v.username.$dirty) return errors
@@ -122,11 +122,13 @@ export default {
             username: this.username,
             token: this.jwt
             }
-          this.loginUser({
-            data
-          })
+          let found = await this.loginUser({ data })
+          if(found){
+            this.$router.push(`./user/${this.user.username}`)
+          }
         }
         else {
+          //TODO: Address case where authentication fails
           console.log("Not Authenticated")
         }
       }
