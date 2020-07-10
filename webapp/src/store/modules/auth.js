@@ -21,6 +21,7 @@ const auth = {
     },
 
     actions: {
+        //fetch from API
         async fetchJWT({ commit }, { username, password}){
             try {
                 const res = await api.post("/users/login", {username, password})
@@ -32,6 +33,10 @@ const auth = {
                 console.log(error)
             }
         },
+        clearAuth({ commit }){
+            commit('setJWT', '')
+            commit('setAuthenticated', false)
+        }
     }
 }
 

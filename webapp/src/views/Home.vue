@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <v-container fluid lass="mb-10" style="max-width: 1200px">
+    <v-container fluid class="mb-10" style="max-width: 1200px">
       <v-row>
         <v-col  class="d-flex align-center justify-center">
           <div class="px-5 white--text">

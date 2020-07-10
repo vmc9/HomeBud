@@ -11,6 +11,10 @@ const login = {
 
     mutations: {
         setUser(state, user) {
+            if(user != ''){
+                user.firstname = toCap(user.firstname)
+                user.lastname = toCap(user.lastname)
+            }
             state.currentUser = user
         }
     },
@@ -35,8 +39,17 @@ const login = {
                 console.log(error)
                 return false
             }
+        },
+        logoutUser({ commit }){
+            commit('setUser', '')
         }
     }
+}
+
+const toCap = (name) => {
+    let a = name.substring(0 , 1).toUpperCase()
+    let b = name.substring(1, name.length)
+    return a + b
 }
 
 export default login
