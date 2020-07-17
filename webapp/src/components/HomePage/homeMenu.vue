@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import FoundPet from "./HomeMenu/foundPet"
-import LostPet from "./HomeMenu/lostPet"
-import HelpOut from "./HomeMenu/helpOut"
+import FoundPet from "./foundPet"
+import LostPet from "./lostPet"
+import HelpOut from "./helpOut"
 export default {
     components: {
         FoundPet,

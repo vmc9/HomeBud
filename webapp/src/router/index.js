@@ -1,43 +1,70 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
   const routes = [
+  //Application Level Routes
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('../views/Application/Home.vue')
   },
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import('../views/Application/About.vue')
   },
   {
     path: '/signup',
     name: 'Signup',
-    component: () => import('../views/Signup.vue')
+    component: () => import('../views/Application/Signup.vue')
   },
   {
     path: '/signup/ok',
     name: 'SignupOk',
-    component: () => import('../views/SignupOk.vue')
+    component: () => import('../views/Application/SignupOk.vue')
   },
   {
     path: '/signup/error',
     name: 'SignupError',
-    component: () => import('../views/SignupError.vue')
+    component: () => import('../views/Application/SignupError.vue')
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/Login.vue')
+    component: () => import('../views/Application/Login.vue')
+  },
+  {
+    path: '/user/:username',
+    name: 'UserPage',
+    component: () => import('../views/Application/UserPage.vue')
+  },
+  //HomeBase Level Routes
+  {
+    path: '/user/:username/pets',
+    name: 'MyPets',
+    component: () => import('../views/HomeBase/Profile/Pets.vue')
+  },
+  {
+    path: '/user/:username/communities',
+    name: 'MyCommunities',
+    component: () => import('../views/HomeBase/Profile/Communities.vue')
+  },
+  {
+    path: '/user/:username/account',
+    name: 'MyAccount',
+    component: () => import('../views/HomeBase/Profile/Account.vue')
+  },
+  //HomeBase Pets Routes
+  {
+    path: '/pets/register',
+    name: 'RegisterPet',
+    component: () => import('../views/HomeBase/Pets/RegisterPet.vue')
   }
+  //HomeBase Communities Routes
+
+  //HomeBase Sightings Routes
 ]
 
 const router = new VueRouter({

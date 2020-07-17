@@ -74,24 +74,25 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import { required, minLength, helpers} from 'vuelidate/lib/validators'
-import {api} from "../plugins/services.js"
 const pass = helpers.regex('pass', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/)
 export default {
   data() {
     return {
-      banner1:require('../assets/images/medium/ali.jpg'),
-      banner2:require('../assets/images/medium/gina.jpg'),
-      banner3:require('../assets/images/medium/mike.jpg'),
-      banner4:require('../assets/images/medium/mila.jpg'),
-      banner5:require('../assets/images/medium/chris.jpg'),
-      banner6:require('../assets/images/medium/jess.jpg'),      
-      title: require('../assets/images/title.png'),
+      banner1:require('../../assets/images/medium/ali.jpg'),
+      banner2:require('../../assets/images/medium/gina.jpg'),
+      banner3:require('../../assets/images/medium/mike.jpg'),
+      banner4:require('../../assets/images/medium/mila.jpg'),
+      banner5:require('../../assets/images/medium/chris.jpg'),
+      banner6:require('../../assets/images/medium/jess.jpg'),      
+      title: require('../../assets/images/title.png'),
       username: '',
       password: '',
     }
   },
   computed:{
+    ...mapGetters(['jwt', 'authenticated', 'user']),
     usernameErrors () {
       const errors = []
       if (!this.$v.username.$dirty) return errors
@@ -108,24 +109,28 @@ export default {
     },
   },
   methods: {
-    submit(){
+    ...mapActions(['fetchJWT', 'loginUser']),
+    async submit(){
       this.$v.$touch()
       if(!this.$v.$invalid){
-        const data = {
-          username: this.username,
+        await this.fetchJWT({ 
+          username: this.username, 
           password: this.password
-        }
-        api.post("/users/login", data)
-          .then((res)=>{
-            console.log(res)
-            if(res.status == 200){
-              console.log('Logged in')
-              
+          })
+        if(this.authenticated){
+          const data = {
+            username: this.username,
+            token: this.jwt
             }
-          })
-          .catch((err)=>{
-            console.log(err)
-          })
+          let found = await this.loginUser({ data })
+          if(found){
+            this.$router.push(`./user/${this.user.username}`)
+          }
+        }
+        else {
+          //TODO: Address case where authentication fails
+          console.log("Not Authenticated")
+        }
       }
     },
     clear(){

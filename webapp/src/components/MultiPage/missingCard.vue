@@ -48,7 +48,7 @@ export default {
             owner: "Marie Kondo",
             lost: "June 6 2020",
             avatar: "",
-            picture: require("../assets/images/1.jpg")
+            picture: require("../../assets/images/1.jpg")
         }
     }
 }
