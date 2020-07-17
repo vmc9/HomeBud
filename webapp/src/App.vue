@@ -11,7 +11,7 @@
 
 <script>
 import NavBar from './components/navBar'
-import UserBar from './components/User/userBar'
+import UserBar from './components/UserPage/userBar'
 import PageFoot from './components/pageFoot'
 import { mapGetters } from 'vuex'
 export default {

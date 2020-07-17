@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import AuthorizedUser from '../components/User/authorizedUser'
-import UnauthorizedUser from '../components/User/unauthorizedUser'
+import AuthorizedUser from '../../components/UserPage/authorizedUser'
+import UnauthorizedUser from '../../components/UserPage/unauthorizedUser'
 import { mapGetters } from 'vuex'
 export default {
     name: 'User',

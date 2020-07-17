@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import HomeMenu from "../components/homeMenu"
-import MissingCard from "../components/missingCard"
+import HomeMenu from "../../components/HomePage/homeMenu"
+import MissingCard from "../../components/MultiPage/missingCard"
 export default {
   name: 'Home',
   components: {
@@ -42,7 +42,7 @@ export default {
   },
   data() {
     return {
-      logo: require('../assets/images/logo.png'),
+      logo: require('../../assets/images/logo.png'),
       tab: null,
       items: [
         {tab: "I Lost A Pet", content: 'What to do if you lost a pet', icon: "mdi-alert-decagram"},

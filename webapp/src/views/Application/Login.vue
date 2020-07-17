@@ -80,13 +80,13 @@ const pass = helpers.regex('pass', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&
 export default {
   data() {
     return {
-      banner1:require('../assets/images/medium/ali.jpg'),
-      banner2:require('../assets/images/medium/gina.jpg'),
-      banner3:require('../assets/images/medium/mike.jpg'),
-      banner4:require('../assets/images/medium/mila.jpg'),
-      banner5:require('../assets/images/medium/chris.jpg'),
-      banner6:require('../assets/images/medium/jess.jpg'),      
-      title: require('../assets/images/title.png'),
+      banner1:require('../../assets/images/medium/ali.jpg'),
+      banner2:require('../../assets/images/medium/gina.jpg'),
+      banner3:require('../../assets/images/medium/mike.jpg'),
+      banner4:require('../../assets/images/medium/mila.jpg'),
+      banner5:require('../../assets/images/medium/chris.jpg'),
+      banner6:require('../../assets/images/medium/jess.jpg'),      
+      title: require('../../assets/images/title.png'),
       username: '',
       password: '',
     }

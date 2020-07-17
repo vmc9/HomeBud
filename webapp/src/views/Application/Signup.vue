@@ -104,17 +104,16 @@
 </template>
 
 <script>
-//import { mapGetters, mapActions} from 'vuex'
 import { required, minLength, email, helpers} from 'vuelidate/lib/validators'
-import {api} from "../plugins/services.js"
+import {api} from "../../plugins/services.js"
 const pass = helpers.regex('pass', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/)
 export default {
   data() {
     return {
-      banner1:require('../assets/images/medium/dan.jpg'),
-      banner2:require('../assets/images/medium/renee.jpg'),
-      banner3:require('../assets/images/medium/travis.jpg'),    
-      title: require('../assets/images/title.png'),
+      banner1:require('../../assets/images/medium/dan.jpg'),
+      banner2:require('../../assets/images/medium/renee.jpg'),
+      banner3:require('../../assets/images/medium/travis.jpg'),    
+      title: require('../../assets/images/title.png'),
       firstname: '',
       lastname: '',
       username: '',
