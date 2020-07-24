@@ -135,7 +135,7 @@ export default {
       !this.$v.lastname.required && errors.push('Last Name is required.')
       return errors
     },
-    //TODO: CHANGE LIMITATION TO 6 CHARACTERS
+    //TODO: Change limit to 6
     usernameErrors () {
       const errors = []
       if (!this.$v.username.$dirty) return errors

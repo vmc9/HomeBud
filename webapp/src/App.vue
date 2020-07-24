@@ -2,7 +2,7 @@
   <v-app id="app">
     <user-bar app v-if="this.authenticated"/>
     <nav-bar app v-else/>
-    <v-content class="blue lighten-3">
+    <v-content app class="blue lighten-3">
       <router-view/>      
     </v-content>
     <page-foot app/>
@@ -17,7 +17,6 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'App',
   components: {
-    //TODO: Modify nav bar based on logged in status (Log out button, etc)
     NavBar,
     UserBar,
     PageFoot
