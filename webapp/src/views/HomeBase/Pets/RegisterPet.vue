@@ -166,7 +166,7 @@
                                                 multiple
                                                 v-model='pictures'
                                                 show-size
-                                                accept="image/*"
+                                                accept="image/jpeg"
                                                 outlined
                                                 counter
                                                 color="primary"
@@ -191,7 +191,7 @@
                                             Hold the CTRL key while selecting files to pick more than one
                                         </v-card-title>
                                         <v-card-title class="primary--text justify-center">
-                                            Max total file size is 500 kB
+                                            Max total file size is 1000 kB
                                         </v-card-title>
                                     </v-col>
                                 </v-row>
@@ -272,6 +272,9 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import { api } from '../../../plugins/services'
+import { resize } from '../../../plugins/resize'
+
 export default {
     data() {
         return {
@@ -297,7 +300,7 @@ export default {
             warning: false,
             timeout: 5000,
             rules: [
-                value => !value || value.size < 500000 || 'Uploads must be less than 500Kb'
+                value => !value || value.size > 1000000 || 'Uploads must be less than 1000 Kb'
             ]
         }
     },
@@ -396,8 +399,24 @@ export default {
                 this.warning = false
             }
         },
-        submit: function(){
-            console.log(this.$data)
+        submit: async function(){
+            const form = new FormData(form)
+            form.append("pet_id", "5f50f741bd5eca1f8022da3e")
+            const photos = this.pictures
+            for(let photo of photos){
+                const resized = await resize(photo)
+                console.log("RESIZED:", resized)
+                form.append("pet_photo", resized)
+            }
+            for(let [name, value] of form) {
+              alert(`${name} = ${value}`); // key1=value1, then key2=value2
+            }
+            const config = { headers: { 'Content-Type': 'multipart/form-data' } }
+            api.post('pets/upload', form, config)
+            .then((res)=>{
+                console.log(res)
+            })
+            //console.log(this.$data)
         },
         select_profile: function(index){
             this.profile = this.preview[index]
