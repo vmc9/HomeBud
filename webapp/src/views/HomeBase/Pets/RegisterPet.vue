@@ -216,7 +216,7 @@
                             >
                                 Upload Error: Make sure you dont upload files that exceed the 10Mb and 5 file limits
                             </v-snackbar>
-                                                        <v-snackbar
+                            <v-snackbar
                             v-model="warning"
                             dark
                             :timeout=timeout
