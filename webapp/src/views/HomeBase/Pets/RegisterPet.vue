@@ -214,7 +214,14 @@
                             dark
                             :timeout=timeout
                             >
-                                Upload Error: Make sure you dont upload files that exceed 10Mb and 5 file limit
+                                Upload Error: Make sure you dont upload files that exceed the 10Mb and 5 file limits
+                            </v-snackbar>
+                                                        <v-snackbar
+                            v-model="warning"
+                            dark
+                            :timeout=timeout
+                            >
+                                Please ensure your uploads meet our highlighted limits before proceeding
                             </v-snackbar>
                         </v-stepper-content>
                         <!--Pet Summary-->
@@ -307,6 +314,7 @@ export default {
             cat: require('../../../assets/images/medium/cat.png'),
             warning: false,
             file_warning: false,
+            invalid_files: false,
             timeout: 5000,
             rules: [
                 value => !value.length || value.reduce((size, file) => size + file.size, 0) < 10000000 || "Uploads must be less than 10 Mb",
@@ -400,8 +408,12 @@ export default {
                 }
             } else if(this.step ==3){
                 this.$v.$touch()
-                console.log(this.rules)
-                this.step = this.step + 1
+                if(this.invalid_files){
+                    this.warning = true
+                } else {
+                    this.warning = false
+                    this.step = this.step + 1
+                }
             }
         },
         prev: function(){
@@ -426,6 +438,8 @@ export default {
         },
         evaluate: function(file){
             this.file_warning = false
+            this.invalid_files = false
+
             if(file[0]){
                 if(file[0].size > 10000000){
                     this.file_warning = true
@@ -433,6 +447,8 @@ export default {
                 }else if(this.pictures.length > 10) {
                     this.file_warning = true
                     this.pictures = []
+                }else if(this.pictures.length > 5 || this.pictures.reduce((size, file) => size + file.size, 0) > 10000000){
+                    this.invalid_files = true
                 }
             }
         },
