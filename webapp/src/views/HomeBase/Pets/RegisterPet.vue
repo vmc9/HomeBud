@@ -163,6 +163,7 @@
                                             <v-col>
                                                 <v-file-input
                                                 :rules="rules"
+                                                @change='evaluate($event)'
                                                 multiple
                                                 v-model='pictures'
                                                 show-size
@@ -191,7 +192,7 @@
                                             Hold the CTRL key while selecting files to pick more than one
                                         </v-card-title>
                                         <v-card-title class="primary--text justify-center">
-                                            Max total file size is 1000 kB
+                                            Max total file size is 10 Mb
                                         </v-card-title>
                                     </v-col>
                                 </v-row>
@@ -208,6 +209,13 @@
                                     <v-btn centered @click="next" x-large class="primary mx-5">Next</v-btn>
                                 </v-row>
                             </v-card>
+                            <v-snackbar
+                            v-model="file_warning"
+                            dark
+                            :timeout=timeout
+                            >
+                                Upload Error: Make sure you dont upload files that exceed 10Mb and 5 file limit
+                            </v-snackbar>
                         </v-stepper-content>
                         <!--Pet Summary-->
                         <v-stepper-content step="4">
@@ -298,9 +306,11 @@ export default {
             dog: require('../../../assets/images/medium/dog.png'),
             cat: require('../../../assets/images/medium/cat.png'),
             warning: false,
+            file_warning: false,
             timeout: 5000,
             rules: [
-                value => !value || value.size > 1000000 || 'Uploads must be less than 1000 Kb'
+                value => !value.length || value.reduce((size, file) => size + file.size, 0) < 10000000 || "Uploads must be less than 10 Mb",
+                value => !value.length || value.length <=5 || "Uploads cannot exceed 5 files"
             ]
         }
     },
@@ -389,6 +399,8 @@ export default {
                     this.step = this.step + 1
                 }
             } else if(this.step ==3){
+                this.$v.$touch()
+                console.log(this.rules)
                 this.step = this.step + 1
             }
         },
@@ -402,21 +414,27 @@ export default {
         submit: async function(){
             const form = new FormData(form)
             form.append("pet_id", "5f50f741bd5eca1f8022da3e")
-            const photos = this.pictures
-            for(let photo of photos){
+            for(let photo of this.pictures){
                 const resized = await resize(photo)
-                console.log("RESIZED:", resized)
                 form.append("pet_photo", resized)
-            }
-            for(let [name, value] of form) {
-              alert(`${name} = ${value}`); // key1=value1, then key2=value2
             }
             const config = { headers: { 'Content-Type': 'multipart/form-data' } }
             api.post('pets/upload', form, config)
             .then((res)=>{
                 console.log(res)
             })
-            //console.log(this.$data)
+        },
+        evaluate: function(file){
+            this.file_warning = false
+            if(file[0]){
+                if(file[0].size > 10000000){
+                    this.file_warning = true
+                    this.pictures = []
+                }else if(this.pictures.length > 10) {
+                    this.file_warning = true
+                    this.pictures = []
+                }
+            }
         },
         select_profile: function(index){
             this.profile = this.preview[index]
