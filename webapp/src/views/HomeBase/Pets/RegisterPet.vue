@@ -212,6 +212,7 @@
                             <v-snackbar
                             v-model="file_warning"
                             dark
+                            color='error'
                             :timeout=timeout
                             >
                                 Upload Error: Make sure you dont upload files that exceed the 10Mb and 5 file limits
@@ -224,7 +225,7 @@
                                 Please ensure your uploads meet our highlighted limits before proceeding
                             </v-snackbar>
                         </v-stepper-content>
-                        <!--Pet Summary-->
+                        <!--TODO:Pet Summary-->
                         <v-stepper-content step="4">
                             <v-card class="pa-10">
                                 <v-row>
