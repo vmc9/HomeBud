@@ -163,10 +163,11 @@
                                             <v-col>
                                                 <v-file-input
                                                 :rules="rules"
+                                                @change='evaluate($event)'
                                                 multiple
                                                 v-model='pictures'
                                                 show-size
-                                                accept="image/*"
+                                                accept="image/jpeg"
                                                 outlined
                                                 counter
                                                 color="primary"
@@ -191,7 +192,7 @@
                                             Hold the CTRL key while selecting files to pick more than one
                                         </v-card-title>
                                         <v-card-title class="primary--text justify-center">
-                                            Max total file size is 500 kB
+                                            Max total file size is 10 Mb
                                         </v-card-title>
                                     </v-col>
                                 </v-row>
@@ -208,15 +209,30 @@
                                     <v-btn centered @click="next" x-large class="primary mx-5">Next</v-btn>
                                 </v-row>
                             </v-card>
+                            <v-snackbar
+                            v-model="file_warning"
+                            dark
+                            color='error'
+                            :timeout=timeout
+                            >
+                                Upload Error: Make sure you dont upload files that exceed the 10Mb and 5 file limits
+                            </v-snackbar>
+                            <v-snackbar
+                            v-model="warning"
+                            dark
+                            :timeout=timeout
+                            >
+                                Please ensure your uploads meet our highlighted limits before proceeding
+                            </v-snackbar>
                         </v-stepper-content>
-                        <!--Pet Summary-->
+                        <!--TODO:Pet Summary-->
                         <v-stepper-content step="4">
-                            <v-card class="pa-10">
+                            <v-card class="pa-1">
                                 <v-row>
                                     <v-col>
                                         <v-card>
-                                            <v-row justify="center" class="py-3">
-                                                    <v-avatar size="150"><v-img :src="profile" alt=""/></v-avatar>
+                                            <v-row justify="center" class="pt-5">
+                                                    <v-avatar size="150"  id="profile_display"><v-img :src="profile_preview"/></v-avatar>
                                             </v-row>
                                             <v-row justify="center">
                                                     <v-card-title>{{ details.name }}'s Details</v-card-title>
@@ -224,11 +240,13 @@
                                             <v-simple-table>
                                                 <tbody>
                                                     <tr v-for="(detail, key) in details" :key="key">
-                                                        <template v-if="key != 'description'">
-                                                            <td v-if="detail != ''" class="text-center" style="width: 600px">{{key}}</td> 
-                                                            <td v-if="detail != ''" class="text-center" style="width: 600px">{{detail}}</td>
+                                                        <template v-if="key != 'description' && key != 'profile'">
+                                                            <td v-if="detail != ''" class="text-center" style="width: 600px">{{key}}</td>
+                                                            <td v-if="detail != '' && key != 'owner'" class="text-center" style="width: 600px">{{detail}}</td>
+                                                            <td v-if="detail != '' && key === 'owner'" class="text-center" style="width: 600px">{{getOwner.username}}</td>
+
                                                         </template>
-                                                        <template v-else>
+                                                        <template v-else-if="key === 'description'">
                                                             <td class="text-center" colspan="2">{{detail}}</td>
                                                         </template>
                                                     </tr>
@@ -245,7 +263,10 @@
                                             <v-row>
                                                 <v-col v-for="(pic, index) in preview" :key="index">
                                                     <v-row justify="center">
-                                                        <v-img  :src="pic" contain aspect-ratio="2.5" @click="select_profile(index)" class="preview"/>
+                                                            <v-avatar size="150"><v-img :src="pic" alt=""/></v-avatar>
+                                                    </v-row>
+                                                    <v-row justify="center" >
+                                                            <v-btn centered @click="select_profile(index) " class="primary white--text mt-5"> {{ (index+1) }} </v-btn>
                                                     </v-row>
                                                 </v-col>
                                             </v-row>
@@ -257,7 +278,7 @@
                                 <v-row justify="center" class="pt-3">
                                     <v-btn centered @click="prev" x-large class="primary mx-5">Previous</v-btn>
                                     <v-spacer/>
-                                    <v-btn centered x-large class="primary mx-5">Clear</v-btn>
+                                    <v-btn centered @click="clear" x-large class="primary mx-5">Clear</v-btn>
                                     <v-spacer/>
                                     <v-btn centered @click="submit" x-large class="primary mx-5">Submit</v-btn>
                                 </v-row>
@@ -271,7 +292,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
+import { api } from '../../../plugins/services'
+import { resize } from '../../../plugins/resize'
+import { makeSpin } from '../../../plugins/animations'
+
 export default {
     data() {
         return {
@@ -284,6 +310,8 @@ export default {
                 age: '',
                 sex: '',
                 color: '',
+                owner: '',
+                profile: 'default',
                 description: ''
             },
             pictures: [],
@@ -291,17 +319,21 @@ export default {
             sexes: ['Male', 'Female'],
             cat_ages: ['Kitten (0 - 7 Months)', 'Junior (7 months - 2 Years)', 'Adult (2 Years - 6 Years)', 'Mature (6 Years - 10 Years)', 'Senior (Older than 10 Years)'],
             dog_ages: ['Puppy (0 - 7 Months)', 'Junior (7 months - 2 Years)', 'Adult (2 Years - 6 Years)', 'Mature (6 Years - 10 Years)', 'Senior (Older than 10 Years)'],
-            profile: require('../../../assets/images/medium/nice.jpg'),
             dog: require('../../../assets/images/medium/dog.png'),
             cat: require('../../../assets/images/medium/cat.png'),
-            warning: false,
-            timeout: 5000,
+            warning: false, //flag for missing data on a given step
+            file_warning: false, //flag for error uploading files
+            invalid_files: false, //flag for error uploading files
+            timeout: 5000, //warning snackbar timeout
             rules: [
-                value => !value || value.size < 500000 || 'Uploads must be less than 500Kb'
+                value => !value.length || value.reduce((size, file) => size + file.size, 0) < 10000000 || "Uploads must be less than 10 Mb",
+                value => !value.length || value.length <=5 || "Uploads cannot exceed 5 files"
             ]
         }
     },
     computed: {
+        ...mapGetters(['user']),
+        getOwner() { return this.user},
         dogcheck() { return (this.details.type == 'dog' ? 'success' : '')},
         catcheck() { return (this.details.type == 'cat' ? 'success' : '')},
         agecheck() {
@@ -312,6 +344,13 @@ export default {
                 animal = this.cat_ages
             }
             return animal
+        },
+        profile_preview() {
+            if(this.details.profile === 'default'){
+                return require('../../../assets/images/medium/nice.jpg')
+            }else{
+                return URL.createObjectURL(this.pictures[this.details.profile])
+            }
         },
         preview() {
             let prevpictures = []
@@ -324,7 +363,6 @@ export default {
             }
             return prevpictures
         },
-        typeval(){ return this.details.type == ''},
         nameErrors(){
             const errors = []
             if (!this.$v.details.name.$dirty) return errors
@@ -386,21 +424,77 @@ export default {
                     this.step = this.step + 1
                 }
             } else if(this.step ==3){
-                this.step = this.step + 1
+                this.$v.$touch()
+                if(this.invalid_files){
+                    this.warning = true
+                } else {
+                    this.warning = false
+                    this.step = this.step + 1
+                }
             }
         },
         prev: function(){
-            this.profile = require('../../../assets/images/medium/nice.jpg')
+            this.details.profile = 'default'
             if(this.step != 1){
                 this.step = this.step - 1
                 this.warning = false
             }
         },
-        submit: function(){
-            console.log(this.$data)
+        submit: async function(){
+            console.log(this.details)
+            const result = await api.post('pets/', this.details)
+            console.log(result)
+            if(result.status == 201){
+                const form = new FormData(form)
+                form.append("pet_id", result.data.createdPet._id)
+                for(let photo of this.pictures){
+                    const resized = await resize(photo)
+                    form.append("pet_photo", resized)
+                }
+                //TODO: Branch submit cases to when there are pictures uploaded, and when there are none
+                const config = { headers: { 'Content-Type': 'multipart/form-data' } }
+                const upload = await api.post('pets/upload', form, config)
+                console.log(upload)
+            }else{
+                //TODO: Pet creation error response
+                console.log('ERROR')
+            }
+        },
+        clear: function(){
+            this.details = {
+                type: '',
+                name: '',
+                breed: '',
+                size: '',
+                age: '',
+                sex: '',
+                color: '',
+                owner: '',
+                profile: 'default',
+                description: ''
+            },
+            this.pictures = [],
+            this.step = 1
+        },
+        evaluate: function(file){
+            this.file_warning = false
+            this.invalid_files = false
+
+            if(file[0]){
+                if(file[0].size > 10000000){
+                    this.file_warning = true
+                    this.pictures = []
+                }else if(this.pictures.length > 10) {
+                    this.file_warning = true
+                    this.pictures = []
+                }else if(this.pictures.length > 5 || this.pictures.reduce((size, file) => size + file.size, 0) > 10000000){
+                    this.invalid_files = true
+                }
+            }
         },
         select_profile: function(index){
-            this.profile = this.preview[index]
+            makeSpin('profile_display')
+            this.details.profile = index
         }
     },
     validations: {
@@ -427,6 +521,9 @@ export default {
                 required
             }
         }
+    },
+    created: function(){
+        this.details.owner = this.getOwner.id
     }   
 }
 </script>
