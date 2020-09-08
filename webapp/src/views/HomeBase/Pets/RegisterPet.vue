@@ -227,12 +227,12 @@
                         </v-stepper-content>
                         <!--TODO:Pet Summary-->
                         <v-stepper-content step="4">
-                            <v-card class="pa-10">
+                            <v-card class="pa-1">
                                 <v-row>
                                     <v-col>
                                         <v-card>
-                                            <v-row justify="center" class="py-3">
-                                                    <v-avatar size="150"  id="profile_display"><v-img :src="profile_preview" alt=""/></v-avatar>
+                                            <v-row justify="center" class="pt-5">
+                                                    <v-avatar size="150"  id="profile_display"><v-img :src="profile_preview"/></v-avatar>
                                             </v-row>
                                             <v-row justify="center">
                                                     <v-card-title>{{ details.name }}'s Details</v-card-title>
@@ -241,8 +241,10 @@
                                                 <tbody>
                                                     <tr v-for="(detail, key) in details" :key="key">
                                                         <template v-if="key != 'description' && key != 'profile'">
-                                                            <td v-if="detail != ''" class="text-center" style="width: 600px">{{key}}</td> 
-                                                            <td v-if="detail != ''" class="text-center" style="width: 600px">{{detail}}</td>
+                                                            <td v-if="detail != ''" class="text-center" style="width: 600px">{{key}}</td>
+                                                            <td v-if="detail != '' && key != 'owner'" class="text-center" style="width: 600px">{{detail}}</td>
+                                                            <td v-if="detail != '' && key === 'owner'" class="text-center" style="width: 600px">{{getOwner.username}}</td>
+
                                                         </template>
                                                         <template v-else-if="key === 'description'">
                                                             <td class="text-center" colspan="2">{{detail}}</td>
@@ -264,7 +266,7 @@
                                                             <v-avatar size="150"><v-img :src="pic" alt=""/></v-avatar>
                                                     </v-row>
                                                     <v-row justify="center" >
-                                                            <v-btn centered @click="select_profile(index) " class="primary mt-5"> {{ (index+1) }} </v-btn>
+                                                            <v-btn centered @click="select_profile(index) " class="primary white--text mt-5"> {{ (index+1) }} </v-btn>
                                                     </v-row>
                                                 </v-col>
                                             </v-row>
@@ -319,10 +321,10 @@ export default {
             dog_ages: ['Puppy (0 - 7 Months)', 'Junior (7 months - 2 Years)', 'Adult (2 Years - 6 Years)', 'Mature (6 Years - 10 Years)', 'Senior (Older than 10 Years)'],
             dog: require('../../../assets/images/medium/dog.png'),
             cat: require('../../../assets/images/medium/cat.png'),
-            warning: false,
-            file_warning: false,
-            invalid_files: false,
-            timeout: 5000,
+            warning: false, //flag for missing data on a given step
+            file_warning: false, //flag for error uploading files
+            invalid_files: false, //flag for error uploading files
+            timeout: 5000, //warning snackbar timeout
             rules: [
                 value => !value.length || value.reduce((size, file) => size + file.size, 0) < 10000000 || "Uploads must be less than 10 Mb",
                 value => !value.length || value.length <=5 || "Uploads cannot exceed 5 files"
@@ -361,7 +363,6 @@ export default {
             }
             return prevpictures
         },
-        typeval(){ return this.details.type == ''},
         nameErrors(){
             const errors = []
             if (!this.$v.details.name.$dirty) return errors
@@ -440,7 +441,8 @@ export default {
             }
         },
         submit: async function(){
-            const result = await api.post('pets/', this.$data.details)
+            console.log(this.details)
+            const result = await api.post('pets/', this.details)
             console.log(result)
             if(result.status == 201){
                 const form = new FormData(form)
@@ -477,7 +479,7 @@ export default {
         },
         select_profile: function(index){
             makeSpin('profile_display')
-            this.details.profile = (index+1)
+            this.details.profile = index
         }
     },
     validations: {
