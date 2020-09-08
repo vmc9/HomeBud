@@ -232,7 +232,7 @@
                                     <v-col>
                                         <v-card>
                                             <v-row justify="center" class="py-3">
-                                                    <v-avatar size="150"><v-img :src="profile" alt=""/></v-avatar>
+                                                    <v-avatar size="150"  id="profile_display"><v-img :src="profile_preview" alt=""/></v-avatar>
                                             </v-row>
                                             <v-row justify="center">
                                                     <v-card-title>{{ details.name }}'s Details</v-card-title>
@@ -240,11 +240,11 @@
                                             <v-simple-table>
                                                 <tbody>
                                                     <tr v-for="(detail, key) in details" :key="key">
-                                                        <template v-if="key != 'description'">
+                                                        <template v-if="key != 'description' && key != 'profile'">
                                                             <td v-if="detail != ''" class="text-center" style="width: 600px">{{key}}</td> 
                                                             <td v-if="detail != ''" class="text-center" style="width: 600px">{{detail}}</td>
                                                         </template>
-                                                        <template v-else>
+                                                        <template v-else-if="key === 'description'">
                                                             <td class="text-center" colspan="2">{{detail}}</td>
                                                         </template>
                                                     </tr>
@@ -261,7 +261,10 @@
                                             <v-row>
                                                 <v-col v-for="(pic, index) in preview" :key="index">
                                                     <v-row justify="center">
-                                                        <v-img  :src="pic" contain aspect-ratio="2.5" @click="select_profile(index)" class="preview"/>
+                                                            <v-avatar size="150"><v-img :src="pic" alt=""/></v-avatar>
+                                                    </v-row>
+                                                    <v-row justify="center" >
+                                                            <v-btn centered @click="select_profile(index) " class="primary mt-5"> {{ (index+1) }} </v-btn>
                                                     </v-row>
                                                 </v-col>
                                             </v-row>
@@ -287,9 +290,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import { api } from '../../../plugins/services'
 import { resize } from '../../../plugins/resize'
+import { makeSpin } from '../../../plugins/animations'
 
 export default {
     data() {
@@ -303,6 +308,8 @@ export default {
                 age: '',
                 sex: '',
                 color: '',
+                owner: '',
+                profile: 'Default',
                 description: ''
             },
             pictures: [],
@@ -310,7 +317,6 @@ export default {
             sexes: ['Male', 'Female'],
             cat_ages: ['Kitten (0 - 7 Months)', 'Junior (7 months - 2 Years)', 'Adult (2 Years - 6 Years)', 'Mature (6 Years - 10 Years)', 'Senior (Older than 10 Years)'],
             dog_ages: ['Puppy (0 - 7 Months)', 'Junior (7 months - 2 Years)', 'Adult (2 Years - 6 Years)', 'Mature (6 Years - 10 Years)', 'Senior (Older than 10 Years)'],
-            profile: require('../../../assets/images/medium/nice.jpg'),
             dog: require('../../../assets/images/medium/dog.png'),
             cat: require('../../../assets/images/medium/cat.png'),
             warning: false,
@@ -324,6 +330,8 @@ export default {
         }
     },
     computed: {
+        ...mapGetters(['user']),
+        getOwner() { return this.user},
         dogcheck() { return (this.details.type == 'dog' ? 'success' : '')},
         catcheck() { return (this.details.type == 'cat' ? 'success' : '')},
         agecheck() {
@@ -334,6 +342,13 @@ export default {
                 animal = this.cat_ages
             }
             return animal
+        },
+        profile_preview() {
+            if(this.details.profile === 'Default'){
+                return require('../../../assets/images/medium/nice.jpg')
+            }else{
+                return URL.createObjectURL(this.pictures[this.details.profile])
+            }
         },
         preview() {
             let prevpictures = []
@@ -418,24 +433,31 @@ export default {
             }
         },
         prev: function(){
-            this.profile = require('../../../assets/images/medium/nice.jpg')
+            this.details.profile = 'Default'
             if(this.step != 1){
                 this.step = this.step - 1
                 this.warning = false
             }
         },
         submit: async function(){
-            const form = new FormData(form)
-            form.append("pet_id", "5f50f741bd5eca1f8022da3e")
-            for(let photo of this.pictures){
-                const resized = await resize(photo)
-                form.append("pet_photo", resized)
+            const result = await api.post('pets/', this.$data.details)
+            console.log(result)
+            if(result.status == 201){
+                const form = new FormData(form)
+                form.append("pet_id", result.data.createdPet._id)
+                for(let photo of this.pictures){
+                    const resized = await resize(photo)
+                    form.append("pet_photo", resized)
+                }
+                const config = { headers: { 'Content-Type': 'multipart/form-data' } }
+                api.post('pets/upload', form, config)
+                .then((res)=>{
+                    console.log(res)
+                })
+            }else{
+                //TODO: Pet creation error response
+                console.log('ERROR')
             }
-            const config = { headers: { 'Content-Type': 'multipart/form-data' } }
-            api.post('pets/upload', form, config)
-            .then((res)=>{
-                console.log(res)
-            })
         },
         evaluate: function(file){
             this.file_warning = false
@@ -454,7 +476,8 @@ export default {
             }
         },
         select_profile: function(index){
-            this.profile = this.preview[index]
+            makeSpin('profile_display')
+            this.details.profile = (index+1)
         }
     },
     validations: {
@@ -481,6 +504,9 @@ export default {
                 required
             }
         }
+    },
+    created: function(){
+        this.details.owner = this.getOwner.id
     }   
 }
 </script>
