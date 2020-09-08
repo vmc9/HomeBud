@@ -61,7 +61,13 @@ Vue.use(VueRouter)
     path: '/pets/register',
     name: 'RegisterPet',
     component: () => import('../views/HomeBase/Pets/RegisterPet.vue')
+  },
+  {
+    path: '/pets/register/ok',
+    name: 'RegistrationOk',
+    component: () => import('../views/HomeBase/Pets/RegistrationOk.vue')
   }
+
   //HomeBase Communities Routes
 
   //HomeBase Sightings Routes

@@ -278,7 +278,7 @@
                                 <v-row justify="center" class="pt-3">
                                     <v-btn centered @click="prev" x-large class="primary mx-5">Previous</v-btn>
                                     <v-spacer/>
-                                    <v-btn centered x-large class="primary mx-5">Clear</v-btn>
+                                    <v-btn centered @click="clear" x-large class="primary mx-5">Clear</v-btn>
                                     <v-spacer/>
                                     <v-btn centered @click="submit" x-large class="primary mx-5">Submit</v-btn>
                                 </v-row>
@@ -311,7 +311,7 @@ export default {
                 sex: '',
                 color: '',
                 owner: '',
-                profile: 'Default',
+                profile: 'default',
                 description: ''
             },
             pictures: [],
@@ -346,7 +346,7 @@ export default {
             return animal
         },
         profile_preview() {
-            if(this.details.profile === 'Default'){
+            if(this.details.profile === 'default'){
                 return require('../../../assets/images/medium/nice.jpg')
             }else{
                 return URL.createObjectURL(this.pictures[this.details.profile])
@@ -434,7 +434,7 @@ export default {
             }
         },
         prev: function(){
-            this.details.profile = 'Default'
+            this.details.profile = 'default'
             if(this.step != 1){
                 this.step = this.step - 1
                 this.warning = false
@@ -451,15 +451,31 @@ export default {
                     const resized = await resize(photo)
                     form.append("pet_photo", resized)
                 }
+                //TODO: Branch submit cases to when there are pictures uploaded, and when there are none
                 const config = { headers: { 'Content-Type': 'multipart/form-data' } }
-                api.post('pets/upload', form, config)
-                .then((res)=>{
-                    console.log(res)
-                })
+                const upload = await api.post('pets/upload', form, config)
+                console.log(upload)
+                if(upload.status == )
             }else{
                 //TODO: Pet creation error response
                 console.log('ERROR')
             }
+        },
+        clear: function(){
+            this.details = {
+                type: '',
+                name: '',
+                breed: '',
+                size: '',
+                age: '',
+                sex: '',
+                color: '',
+                owner: '',
+                profile: 'default',
+                description: ''
+            },
+            this.pictures = [],
+            this.step = 1
         },
         evaluate: function(file){
             this.file_warning = false
