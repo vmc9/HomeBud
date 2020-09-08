@@ -455,7 +455,6 @@ export default {
                 const config = { headers: { 'Content-Type': 'multipart/form-data' } }
                 const upload = await api.post('pets/upload', form, config)
                 console.log(upload)
-                if(upload.status == )
             }else{
                 //TODO: Pet creation error response
                 console.log('ERROR')
