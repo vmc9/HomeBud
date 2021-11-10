@@ -8,16 +8,21 @@ export default function FormPropsTextFields() {
     <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
+        '& .MuiTextField-root': { 
+            m: 2, 
+            width: '25ch' ,
+        },
+        display: 'grid',
+        gridTemplateColumns: 'repeat(1fr)',
+        justifyContent: 'center'
       }}
       noValidate
       autoComplete="off"
     >
-      <div>
         <TextField
-          id="outlined-username"
-          label="Username"
-          defaultValue="Username"
+          id="email"
+          label="Email"
+          defaultValue="Email"
         />
         <TextField
           id="outlined-password-input"
@@ -25,7 +30,6 @@ export default function FormPropsTextFields() {
           type="password"
           autoComplete="current-password"
         />
-      </div>
       <Button>Login</Button>
       <Button>Reset Password</Button>
     </Box>
