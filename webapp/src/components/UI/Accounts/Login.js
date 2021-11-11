@@ -29,7 +29,7 @@ export default function BasicModal(props) {
     setOpen(true);
     setAction('register');
   }
-  const handleClose = () => setOpen(false);
+  const handleClose = ()=>{ setOpen(false) }
 
   return (
     <>
@@ -43,8 +43,8 @@ export default function BasicModal(props) {
       >
         <Box sx={style}>
           {action === 'login'
-            ? <LoginForm/>
-            : <RegisterForm/>}
+            ? <LoginForm close={handleClose}/>
+            : <RegisterForm close={handleClose}/>}
         </Box>
       </Modal>
     </>
