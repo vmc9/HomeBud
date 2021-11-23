@@ -18,7 +18,7 @@ const style = {
   p: 6,
 };
 
-export default function BasicModal(props) {
+export default function Login(props) {
   const [open, setOpen] = React.useState(false);
   const [action, setAction] = React.useState('')
   const handleLoginOpen = () => {

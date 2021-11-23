@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button'
 
-export default function FormPropsTextFields(props) {
+export default function RegisterForm(props) {
     const [email, setEmail] = React.useState('')
     const emailHandler = (e)=>{
         setEmail(e.target.value)
@@ -18,8 +18,26 @@ export default function FormPropsTextFields(props) {
     const [lastName, setLastName] = React.useState('')
     const lastNameHandler = (e)=>{ setLastName(e.target.value)}
 
-    const registernHandler = ()=>{
-        console.log(`${email}~${pswd}~${firstName}~${lastName}`)
+    const [username, setusername] = React.useState('')
+    const usernameHandler = (e)=>{
+        setusername(e.target.value)
+    }
+
+    const registernHandler = async ()=>{
+        console.log(`${username}~${email}~${pswd}~${firstName}~${lastName}`)
+        const response = await fetch("http://localhost:3001/users/signup", {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            username: username,
+            password: pswd,
+            email: email,
+            firstName: firstName,
+            lastName: lastName
+          })
+        })
+        console.log(await response.json())
+
         setPswd('')
         setEmail('')
         setFirstName('')
@@ -36,7 +54,7 @@ export default function FormPropsTextFields(props) {
                 width: '25ch' ,
             },
             display: 'grid',
-            gridTemplateColumns: 'repeat(1fr)',
+            gridTemplateColumns: 'repeat(2, 2fr)',
             justifyContent: 'center'
           }}
           noValidate
@@ -48,6 +66,12 @@ export default function FormPropsTextFields(props) {
               value={email}
               defaultValue="Email"
               onChange={emailHandler}
+            />
+            <TextField
+              id="username"
+              label="Username"
+              value={username}
+              onChange={usernameHandler}
             />
             <TextField
               id="first-name"
