@@ -3,7 +3,7 @@ import logo from '../../img_assets/images/logo.svg'
 
 const Main = ()=>{
     return(
-        <Box sx={{flexGrow: 1, m: 'auto', width: '80%', mt: 5, mb: 5}}>
+        <Box sx={{flexGrow: 1, m: 'auto', mt: 5, mb: 5}}>
             <Grid container flexWrap="wrap">
                 <Grid item xs={6} textAlign="left" 
                     display="flex" 
